@@ -5,8 +5,6 @@ import { useState } from "react";
 
 const ManualWriting = () => {
 
-
-
     const [emailDetails, setEmailDetails] = useState(null)
     const { register,
         watch,
@@ -41,7 +39,7 @@ const ManualWriting = () => {
 
     // console.log(emailDetails ? emailDetails : null)
 
-    // Queries Field Array
+    // ! Queries Field Array
     const {
         fields: queriesFields,
         append: appendQuery,
@@ -51,7 +49,7 @@ const ManualWriting = () => {
         name: "queries",
     });
 
-    // Completed Field Array
+    //! Completed Field Array
     const {
         fields: completedFields,
         append: appendCompleted,
@@ -61,7 +59,7 @@ const ManualWriting = () => {
         name: "completedTasks",
     });
 
-    // Remaining Field Array
+    //! Remaining Field Array
     const {
         fields: remainingFields,
         append: appendRemaining,
@@ -71,7 +69,7 @@ const ManualWriting = () => {
         name: "remainingTasks",
     });
 
-    // Notes
+    //! Notes Field Array
     const {
         fields: notesField,
         append: appendNotes,
@@ -80,7 +78,7 @@ const ManualWriting = () => {
         control,
         name: "notes"
     });
-
+    //! watch functions for each fields
     // const clientName = watch('clientsName')
     // const project = watch("projectName");
     // const watchedQueries = watch("queries");
@@ -92,7 +90,7 @@ const ManualWriting = () => {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 text-slate-800">
 
-            {/* Inputs */}
+            {/*! Inputs */}
             <div className="w-full lg:w-1/2 p-6 lg:p-10 border-r border-slate-200 overflow-y-auto bg-white">
                 <div className="max-w-2xl mx-auto">
                     <h2 className="text-2xl font-bold mb-2 text-slate-900">Email Writer</h2>
@@ -101,6 +99,7 @@ const ManualWriting = () => {
                     <form onSubmit={handleSubmit(emailSubmit)} className="space-y-8">
                         <button className="bg-blue-500 rounded-md px-3 text-white font-bold py-2" type="submit">Save Changes</button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* clients Name */}
                             <div className="space-y-1">
                                 <label className="text-xs font-semibold text-slate-500 ">Client Name</label>
                                 <input
@@ -111,6 +110,8 @@ const ManualWriting = () => {
                                 />
                                 {errors?.clientsName && <p className="text-red-500">{errors?.clientsName?.message}</p>}
                             </div>
+
+                            {/* //!project Name */}
                             <div className="space-y-1">
                                 <label className="text-xs font-semibold text-slate-500 ">Project Name</label>
                                 <input
@@ -123,7 +124,7 @@ const ManualWriting = () => {
                             </div>
                         </div>
 
-                        {/* COMPLETED TASKS */}
+                        {/* //! COMPLETED TASKS */}
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h3 className="font-bold mb-3 text-slate-700 flex items-center gap-2">
                                 <span className="w-2 h-2 bg-green-500 rounded-full"></span> Completed Tasks
@@ -153,7 +154,7 @@ const ManualWriting = () => {
                             <button type="button" onClick={() => appendCompleted({ completedTask: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Task</button>
                         </div>
 
-                        {/* REMAINING TASKS */}
+                        {/* //! REMAINING TASKS */}
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h3 className="font-bold mb-3 text-slate-700 flex items-center gap-2">
                                 <span className="w-2 h-2 bg-amber-500 rounded-full"></span> In-Progress Tasks
@@ -182,7 +183,7 @@ const ManualWriting = () => {
                             <button type="button" onClick={() => appendRemaining({ remainingTask: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Task</button>
                         </div>
 
-                        {/* QUERIES */}
+                        {/* //! QUERIES */}
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h3 className="font-bold mb-3 text-slate-700 flex items-center gap-2">
                                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span> Queries
@@ -211,7 +212,7 @@ const ManualWriting = () => {
                             <button type="button" onClick={() => appendQuery({ task: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Query</button>
                         </div>
 
-                        {/* NOTES */}
+                        {/* //! NOTES */}
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h3 className="font-bold mb-3 text-slate-700 flex items-center gap-2">
                                 <span className="w-2 h-2 bg-slate-400 rounded-full"></span> Notes
@@ -240,7 +241,7 @@ const ManualWriting = () => {
                             <button type="button" onClick={() => appendNotes({ note: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Note</button>
                         </div>
 
-                        {/* WRITERS NAME */}
+                        {/* //! WRITERS NAME */}
                         <div className="pt-4 border-t border-slate-100">
                             <label className="text-xs font-semibold text-slate-500 ">Your Name</label>
                             <input
@@ -255,7 +256,7 @@ const ManualWriting = () => {
                 </div>
             </div>
 
-            {/* Preview */}
+            {/* //! Preview */}
             <div className="w-full lg:w-3/3 p-6 lg:p-10 bg-slate-100 flex justify-center items-start ">
                 <div className="w-full max-w-4xl bg-white shadow-xl rounded-lg overflow-hidden border border-slate-200">
 
@@ -269,26 +270,32 @@ const ManualWriting = () => {
                         </div>
                     </div>
 
-                    {/* start of Email */}
+                    {/* //! start of Email */}
                     <div className="p-8 md:p-12 text-[17px] leading-relaxed  overflow-x-auto text-black">
+
+                        {/* //! title | project name | subject */}
+
                         {emailDetails?.projectName && <div className="border-b mb-5 border-slate-200">
                             <p className="pb-2">
                                 Updates for {emailDetails.projectName} as on {todayDate}th {month}, {year}
                             </p>
                         </div>}
+
+                        {/* //! clients Name */}
+
                         {emailDetails?.clientsName && (
                             <p className="mb-6 ">
                                 Hi <span className=" text-black">{emailDetails.clientsName}</span>,
                             </p>
                         )}
-
+                        {/* //! project name */}
                         {emailDetails?.projectName && (
                             <p className="mb-6 text-black ">
                                 Following are the current updates for{" "}
                                 <span className="font-semibold underline decoration-black underline-offset-4">{emailDetails.projectName}</span> as on {todayDate}th {month}, {year}:
                             </p>
                         )}
-
+                        {/* //! completed Task */}
                         {emailDetails?.completedTasks?.some(
                             (item) => item.completedTask?.trim() !== ""
                         ) && (
@@ -312,7 +319,7 @@ const ManualWriting = () => {
                                     </ul>
                                 </div>
                             )}
-
+                        {/* //! in - progress Task */}
                         {emailDetails?.remainingTasks?.some((item) => item.remainingTask.trim() !== "") && (
                             <div className="mb-6 ">
                                 <p className="font-bold text-black underline  ">List of In-Progress Tasks:</p>
@@ -326,7 +333,7 @@ const ManualWriting = () => {
                                 </ul>
                             </div>
                         )}
-
+                        {/* //! Queries */}
                         {emailDetails?.queries?.some(item => item.task.trim() !== "") && (
                             <div className="mb-6 ">
                                 {emailDetails?.queries && (<p className="font-bold text-black underline  ">Queries:</p>)}
@@ -340,7 +347,7 @@ const ManualWriting = () => {
                                 </ul>
                             </div>
                         )}
-
+                        {/* //! Notes */}
                         {emailDetails?.notes?.some(item => item.note.trim() !== "") && (
                             <div className="mb-3 ">
                                 {emailDetails?.notes && (<p className="font-bold text-black underline  ">Notes:</p>)}
@@ -352,12 +359,12 @@ const ManualWriting = () => {
                                 </ul>
                             </div>
                         )}
-
+                        {/* //! closer */}
                         {emailDetails?.completedTasks?.some(item => item.completedTask.trim() !== "") && (
                             <p className="">Please check with the latest updates and let us know your thoughts for the same.</p>
                         )
                         }
-
+                        {/* //! writters Name */}
                         {emailDetails?.writtersName?.trim() !== "" && (
                             <div className="pt-5   border-slate-100">
                                 {emailDetails?.writtersName && (<p className=" text-black ">Thanks,</p>)}
