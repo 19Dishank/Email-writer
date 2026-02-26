@@ -1,11 +1,11 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, useFieldArray } from "react-hook-form";
-import { validationSchema } from "../utils/ValidationSchemas";
 
 const Form = () => {
     const { register,
         watch,
         control,
+        setError,
+        clearErrors,
         formState: {
             errors
         } } = useForm({
@@ -20,6 +20,18 @@ const Form = () => {
             },
 
         });
+
+    const validateAndAppend = (fieldName, subFieldName, watchedValue, appendFn, errorMessage) => {
+        if (isLastFieldEmpty(watchedValue, subFieldName)) {
+            setError(fieldName, {
+                type: "manual",
+                message: errorMessage || "Please fill the last field before adding a new one.",
+            });
+        } else {
+            clearErrors(fieldName);
+            appendFn({ [subFieldName]: "" });
+        }
+    };
 
     // todo: date and time
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -43,7 +55,9 @@ const Form = () => {
     const watchedRemainingTasks = watch("remainingTasks");
     const watchedNoted = watch("notes");
     const watchedWrittersName = watch('writtersName');
-
+    const isLastFieldEmpty = (field, subField) => {
+        return field.length > 0 && !field[field.length - 1][subField];
+    };
     // Queries Field Array
     const {
         fields: queriesFields,
@@ -95,8 +109,14 @@ const Form = () => {
             {/* Inputs */}
             <div className="w-full lg:w-1/2 p-6 lg:p-10 border-r border-slate-200 overflow-y-auto bg-white">
                 <div className="max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-2 text-slate-900">Email Writer</h2>
-                    <p className="text-slate-500 mb-8 text-sm">Generate daily updates.</p>
+
+                    {/* <p className="text-center text-slate-600 mb-8 text-xl">
+                        I'm here to write your <span className="font-bold text-slate-900">daily update.</span>
+                    </p> */}
+
+                    <h2 className="text-2xl font-bold mb-2 text-slate-900 capitalize">write daily updates</h2>
+                    <p className="text-slate-500 mb-8 text-sm">I'm here to write your daily updates.</p>
+
 
                     <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
 
@@ -134,15 +154,36 @@ const Form = () => {
                                         {...register(`completedTasks.${index}.completedTask`)}
                                         className="flex-1 p-2 border border-slate-300 rounded-md bg-white"
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") appendCompleted(index)
+                                            if (e.key === "Enter") {
+                                                e.preventDefault()
+                                                validateAndAppend("completedTask", "completedTask", watchedCompletedTasks, appendCompleted);
+                                            }
                                         }}
                                     />
                                     {index > 0 && (
                                         <button onClick={() => removeCompleted(index)} className="text-red-500 px-2 hover:bg-red-50 rounded">✕</button>
                                     )}
+
                                 </div>
                             ))}
-                            <button type="button" onClick={() => appendCompleted({ completedTask: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Task</button>
+                            <button
+                                type="button"
+                                onClick={() => validateAndAppend(
+                                    "completedTask",
+                                    "completedTask",
+                                    watchedCompletedTasks,
+                                    appendCompleted
+                                )}
+                                className="text-sm text-blue-600 font-semibold mt-1 flex items-center gap-1 "
+                            >
+                                <span className="text-lg">+</span> Add Task
+                            </button>
+
+                            {errors?.completedTask && (
+                                <p className="text-red-500 text-sm mt-1 italic">
+                                    {errors?.completedTask.message}
+                                </p>
+                            )}
                         </div>
 
                         {/* REMAINING TASKS */}
@@ -158,7 +199,10 @@ const Form = () => {
                                         {...register(`remainingTasks.${index}.remainingTask`)}
                                         className="flex-1 p-2 border border-slate-300 rounded-md bg-white"
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") appendRemaining(index)
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                validateAndAppend("remainingTask", "remainingTask", watchedRemainingTasks, appendRemaining);
+                                            }
                                         }}
                                     />
                                     {index > 0 && (
@@ -166,7 +210,25 @@ const Form = () => {
                                     )}
                                 </div>
                             ))}
-                            <button type="button" onClick={() => appendRemaining({ remainingTask: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Task</button>
+                            <button
+                                type="button"
+                                onClick={() => validateAndAppend(
+                                    "remainingTask",
+                                    "remainingTask",
+                                    watchedRemainingTasks,
+                                    appendRemaining
+                                )}
+                                className="text-sm text-blue-600 font-semibold mt-1 flex items-center gap-1 "
+                            >
+                                <span className="text-lg">+</span> Add Task
+                            </button>
+
+
+                            {errors?.remainingTask && (
+                                <p className="text-red-500 text-sm mt-1 italic">
+                                    {errors?.remainingTask.message}
+                                </p>
+                            )}
                         </div>
 
                         {/* QUERIES */}
@@ -182,7 +244,10 @@ const Form = () => {
                                         {...register(`queries.${index}.task`)}
                                         className="flex-1 p-2 border border-slate-300 rounded-md bg-white"
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") appendQuery(index)
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                validateAndAppend("task", "task", watchedQueries, appendQuery);
+                                            }
                                         }}
                                     />
                                     {index > 0 && (
@@ -190,7 +255,24 @@ const Form = () => {
                                     )}
                                 </div>
                             ))}
-                            <button type="button" onClick={() => appendQuery({ task: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Query</button>
+                            <button
+                                type="button"
+                                onClick={() => validateAndAppend(
+                                    "task",
+                                    "task",
+                                    watchedQueries,
+                                    appendQuery
+                                )}
+                                className="text-sm text-blue-600 font-semibold mt-2 flex items-center gap-1  active:scale-95 transition-transform"
+                            >
+                                <span className="text-lg">+</span> Add Query
+                            </button>
+
+                            {errors?.task && (
+                                <p className="text-red-500 text-sm mt-1 italic">
+                                    {errors?.task.message}
+                                </p>
+                            )}
                         </div>
 
                         {/* NOTES */}
@@ -206,7 +288,10 @@ const Form = () => {
                                         {...register(`notes.${index}.note`)}
                                         className="flex-1 p-2 border border-slate-300 rounded-md bg-white"
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") appendNotes(index)
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                validateAndAppend("note", "note", watchedNoted, appendNotes);
+                                            }
                                         }}
                                     />
                                     {index > 0 && (
@@ -214,7 +299,24 @@ const Form = () => {
                                     )}
                                 </div>
                             ))}
-                            <button type="button" onClick={() => appendNotes({ note: "" })} className="text-sm text-blue-600 font-semibold mt-1">+ Add Note</button>
+                            <button
+                                type="button"
+                                onClick={() => validateAndAppend(
+                                    "note",
+                                    "note",
+                                    watchedNoted,
+                                    appendNotes
+                                )}
+                                className="text-sm text-blue-600 font-semibold mt-1 flex items-center gap-1 "
+                            >
+                                <span className="text-lg">+</span> Add Note
+                            </button>
+
+                            {errors?.note && (
+                                <p className="text-red-500 text-sm mt-1 italic">
+                                    {errors?.note.message}
+                                </p>
+                            )}
                         </div>
 
                         {/* WRITERS NAME */}
@@ -233,6 +335,9 @@ const Form = () => {
 
             {/* Preview */}
             <div className="w-full lg:w-3/3 p-6 lg:p-10 bg-slate-100 flex justify-center items-start ">
+
+
+
                 <div className="w-full max-w-4xl bg-white shadow-xl rounded-lg overflow-hidden border border-slate-200">
 
 

@@ -214,6 +214,19 @@ const Temp = () => {
 
                 </div>
             </div>
+            <button type="button"
+
+                // disabled={isLastFieldEmpty(watchedComppletedTask, 'completedTask')}
+                onClick={() => {
+                    if (!isLastFieldEmpty(watchedComppletedTask, 'completedTask')) {
+                        appendCompleted({ completedTask: "" });
+                    }
+                }}
+                // onClick={() => appendCompleted({ 'completedTask': "" })}
+                className="text-sm text-blue-600 font-semibold mt-1 disabled:text-gray-500">
+                + {`Add Task`}
+                {/* {isLastFieldEmpty(watchedComppletedTask, 'completedTask') ? "" : " +Add Task"} */}
+            </button>
         </div>
     );
 };

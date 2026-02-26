@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import Form from './Components/Form'
 import ManualWriting from './Components/ManualWriting'
-import Temp from './Components/Temp'
+import { NavLink, Route, Routes } from 'react-router-dom'
 
 function App() {
-
   return (
     <>
-      <ManualWriting /> {/* writes email after clicking save button */}
-      {/* <Form /> */}  {/* writes email after writing anything */}
+
+      <Routes>
+        <Route path='/' element={<Form />} />
+        <Route path='/manual' element={<ManualWriting />} />
+      </Routes>
+
     </>
   )
 }
