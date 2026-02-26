@@ -26,7 +26,6 @@ const ManualWriting = () => {
         });
     // console.log(errors)
     // todo: date and time
-
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const today = new Date();
     const todayDate = today.getDate();
@@ -37,7 +36,11 @@ const ManualWriting = () => {
         setEmailDetails(values);
     }
 
-    // console.log(emailDetails ? emailDetails : null)
+    // suffix for dates
+    const suffix = todayDate === 1 ? "st"
+        : todayDate === 2 ? "nd"
+            : todayDate === 3 ? "rd"
+                : "th";
 
     // ! Queries Field Array
     const {
@@ -78,19 +81,12 @@ const ManualWriting = () => {
         control,
         name: "notes"
     });
-    //! watch functions for each fields
-    // const clientName = watch('clientsName')
-    // const project = watch("projectName");
-    // const watchedQueries = watch("queries");
-    // const watchedCompletedTasks = watch("completedTasks");
-    // const watchedRemainingTasks = watch("remainingTasks");
-    // const watchedNoted = watch("notes");
-    // const watchedWrittersName = watch('writtersName');
+
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 text-slate-800">
 
-            {/*! Inputs */}
+            {/*! form */}
             <div className="w-full lg:w-1/2 p-6 lg:p-10 border-r border-slate-200 overflow-y-auto bg-white">
                 <div className="max-w-2xl mx-auto">
                     <h2 className="text-2xl font-bold mb-2 text-slate-900">Email Writer</h2>
@@ -108,7 +104,7 @@ const ManualWriting = () => {
 
                                     className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                 />
-                                {errors?.clientsName && <p className="text-red-500">{errors?.clientsName?.message}</p>}
+                                {errors?.clientsName && <p className="text-red-500 text-xs">{errors?.clientsName?.message}</p>}
                             </div>
 
                             {/* //!project Name */}
@@ -120,7 +116,7 @@ const ManualWriting = () => {
 
                                     className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                 />
-                                {errors?.projectName && <p className="text-red-500">{errors?.projectName?.message}</p>}
+                                {errors?.projectName && <p className="text-red-500 text-xs">{errors?.projectName?.message}</p>}
                             </div>
                         </div>
 
@@ -145,7 +141,7 @@ const ManualWriting = () => {
                                         <button onClick={() => removeCompleted(index)} className="text-red-500 px-2 hover:bg-red-50 rounded">✕</button>
                                     )}
                                     {errors?.completedTasks?.[index]?.completedTask && (
-                                        <p className="text-red-500">
+                                        <p className="text-red-500 text-xs">
                                             {errors.completedTasks[index].completedTask.message}
                                         </p>
                                     )}
@@ -174,7 +170,7 @@ const ManualWriting = () => {
                                         <button onClick={() => removeRemaining(index)} className="text-red-500 px-2 hover:bg-red-50 rounded">✕</button>
                                     )}
                                     {errors?.remainingTasks?.[index]?.remainingTask && (
-                                        <p className="text-red-500">
+                                        <p className="text-red-500 text-xs">
                                             {errors.remainingTasks[index].remainingTask.message}
                                         </p>
                                     )}
@@ -203,7 +199,7 @@ const ManualWriting = () => {
                                         <button onClick={() => removeQuery(index)} className="text-red-500 px-2 hover:bg-red-50 rounded">✕</button>
                                     )}
                                     {errors?.queries?.[index]?.task && (
-                                        <p className="text-red-500">
+                                        <p className="text-red-500 text-xs">
                                             {errors.queries[index].task.message}
                                         </p>
                                     )}
@@ -232,7 +228,7 @@ const ManualWriting = () => {
                                         <button onClick={() => removeNotes(index)} className="text-red-500 px-2 hover:bg-red-50 rounded">✕</button>
                                     )}
                                     {errors?.notes?.[index]?.note && (
-                                        <p className="text-red-500">
+                                        <p className="text-red-500 text-xs">
                                             {errors.notes[index].note.message}
                                         </p>
                                     )}
@@ -250,7 +246,7 @@ const ManualWriting = () => {
                                 placeholder=" Your Name"
                                 className="w-full p-2.5 border border-slate-300 rounded-lg mt-1 outline-none focus:border-blue-500"
                             />
-                            {errors?.writtersName && <p className="text-red-500">{errors?.writtersName?.message}</p>}
+                            {errors?.writtersName && <p className="text-red-500 text-xs">{errors?.writtersName?.message}</p>}
                         </div>
                     </form>
                 </div>
@@ -277,7 +273,7 @@ const ManualWriting = () => {
 
                         {emailDetails?.projectName && <div className="border-b mb-5 border-slate-200">
                             <p className="pb-2">
-                                Updates for {emailDetails.projectName} as on {todayDate}th {month}, {year}
+                                Updates for {emailDetails.projectName} as on {todayDate}{suffix} {month}, {year}
                             </p>
                         </div>}
 
@@ -292,7 +288,7 @@ const ManualWriting = () => {
                         {emailDetails?.projectName && (
                             <p className="mb-6 text-black ">
                                 Following are the current updates for{" "}
-                                <span className="font-semibold underline decoration-black underline-offset-4">{emailDetails.projectName}</span> as on {todayDate}th {month}, {year}:
+                                <span className="font-semibold underline decoration-black underline-offset-4">{emailDetails.projectName}</span> as on {todayDate}{suffix} {month}, {year}:
                             </p>
                         )}
                         {/* //! completed Task */}

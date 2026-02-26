@@ -28,6 +28,14 @@ const Form = () => {
     const month = months[today.getMonth()];
     const year = today.getFullYear();
 
+
+    // suffix for dates
+    const suffix = todayDate === 1 ? "st"
+        : todayDate === 2 ? "nd"
+            : todayDate === 3 ? "rd"
+                : "th";
+
+
     const data = watch("clientsName");
     const project = watch("projectName");
     const watchedQueries = watch("queries");
@@ -241,7 +249,7 @@ const Form = () => {
                     <div className="p-8 md:p-12 text-[17px] leading-relaxed  overflow-x-auto text-black">
                         {project && <div className="border-b mb-5 border-slate-200">
                             <p className="pb-2">
-                                Updates for {project} as on {todayDate}th {month}, {year}
+                                Updates for {project} as on {todayDate}{suffix} {month}, {year}
                             </p>
                         </div>}
                         {data && (
@@ -253,7 +261,7 @@ const Form = () => {
                         {project && (
                             <p className="mb-6 text-black ">
                                 Following are the current updates for{" "}
-                                <span className="font-semibold underline decoration-black underline-offset-4">{project}</span> as on {todayDate}th {month}, {year}:
+                                <span className="font-semibold underline decoration-black underline-offset-4">{project}</span> as on {todayDate}{suffix} {month}, {year}:
                             </p>
                         )}
 

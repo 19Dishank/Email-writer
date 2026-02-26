@@ -6,8 +6,8 @@ function App() {
 
   return (
     <>
-      {/* <ManualWriting /> */}
-      <Form />
+      <ManualWriting /> {/* writes email after clicking save button */}
+      {/* <Form /> */}  {/* writes email after writing anything */}
     </>
   )
 }
