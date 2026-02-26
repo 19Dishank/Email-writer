@@ -36,12 +36,7 @@ const ManualWriting = () => {
     const watchedNotes = watch("notes")
     const watchedRemainingTasks = watch("remainingTasks")
 
-    // todo: date and time
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const today = new Date();
-    const todayDate = today.getDate();
-    const month = months[today.getMonth()];
-    const year = today.getFullYear();
+
     const emailSubmit = (values) => {
         // console.log(values)
         setEmailDetails(values);
@@ -59,12 +54,37 @@ const ManualWriting = () => {
             appendFn({ [subFieldName]: "" });
         }
     };
-    // suffix for dates
-    const suffix = todayDate === 1 ? "st"
-        : todayDate === 2 ? "nd"
-            : todayDate === 3 ? "rd"
-                : "th";
 
+
+    // todo: date and time
+    // suffix for dates
+    const today = new Date();
+    const todayDate = today.getDate();
+
+    const getSuffix = (day) => {
+        if (day >= 11 && day <= 13) return "th";
+
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    };
+
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const month = months[today.getMonth()];
+    const year = today.getFullYear();
+    const suffix = getSuffix(todayDate);
+
+    const formattedDate = `${month} ${todayDate}${suffix}, ${year}`;
+
+    console.log(formattedDate);
+    console.log(suffix)
     // ! Queries Field Array
     const {
         fields: queriesFields,

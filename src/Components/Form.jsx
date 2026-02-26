@@ -34,18 +34,32 @@ const Form = () => {
     };
 
     // todo: date and time
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const today = new Date();
     const todayDate = today.getDate();
+
+    const getSuffix = (day) => {
+        if (day >= 11 && day <= 13) return "th";
+
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    };
+
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
     const month = months[today.getMonth()];
     const year = today.getFullYear();
+    const suffix = getSuffix(todayDate);
 
+    const formattedDate = `${todayDate}${suffix} ${month}, ${year}`;
 
-    // suffix for dates
-    const suffix = todayDate === 1 ? "st"
-        : todayDate === 2 ? "nd"
-            : todayDate === 3 ? "rd"
-                : "th";
+    // console.log(formattedDate);
 
 
     const data = watch("clientsName");
@@ -354,7 +368,7 @@ const Form = () => {
                     <div className="p-8 md:p-12 text-[17px] leading-relaxed  overflow-x-auto text-black">
                         {project && <div className="border-b mb-5 border-slate-200">
                             <p className="pb-2">
-                                Updates for {project} as on {todayDate}{suffix} {month}, {year}
+                                Updates for {project} as on {formattedDate}
                             </p>
                         </div>}
                         {data && (
@@ -366,7 +380,7 @@ const Form = () => {
                         {project && (
                             <p className="mb-6 text-black ">
                                 Following are the current updates for{" "}
-                                <span className="font-semibold underline decoration-black underline-offset-4">{project}</span> as on {todayDate}{suffix} {month}, {year}:
+                                <span className="font-semibold underline decoration-black underline-offset-4">{project}</span> as on {formattedDate} :
                             </p>
                         )}
 
